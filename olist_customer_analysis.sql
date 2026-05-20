@@ -117,18 +117,18 @@ select* from customers;
 #1 How many total customers are in the dataset?
 select count(*) from customers;
 
-#How many unique cities do customers come from?
+#2 How many unique cities do customers come from?
 select count(distinct customer_city ) as total_no_unique
 from customers ;
 
-# Which are the top 5 states by number of customers?
+#3 Which are the top 5 states by number of customers?
 select customer_state , Count(customer_state) as  count_of_topcustomers 
 from customers 
 group by customer_state 
 order by count_of_topcustomers desc
 limit 5;
 
-#Which city has the highest number of customers in each state?
+#4 Which city has the highest number of customers in each state?
 SELECT customer_state, 
        customer_city, 
        COUNT(*) AS total_customers
@@ -136,7 +136,7 @@ FROM customers
 GROUP BY customer_state, customer_city
 ORDER BY customer_state, total_customers DESC;
 
-#States with less than 100 customers 
+#5 States with less than 100 customers 
 
 SELECT customer_state, 
        COUNT(*) AS total_customers
@@ -145,14 +145,14 @@ GROUP BY customer_state
 HAVING total_customers < 100
 ORDER BY total_customers ASC;
 
-#Rank states by customer count
+#6 Rank states by customer count
 SELECT customer_state ,
        COUNT(*) AS total_customers,
        RANK() OVER (ORDER BY COUNT(*) DESC) AS state_rank
 FROM customers
 GROUP BY customer_state;
 
-#Percentage of customers per state
+#7 Percentage of customers per state
 SELECT customer_state,
        COUNT(*) AS total_customers,
        ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM customers), 2) AS percentage
@@ -160,7 +160,7 @@ FROM customers
 GROUP BY customer_state
 ORDER BY percentage DESC;
 
-#States above national average
+#8 States above national average
 SELECT customer_state, 
        COUNT(*) AS total_customers
 FROM customers
@@ -175,7 +175,7 @@ HAVING total_customers > (
 )
 ORDER BY total_customers DESC; 
 
-#Cities that appear in more than one state
+#9 Cities that appear in more than one state
 SELECT customer_city, 
        COUNT(DISTINCT customer_state) AS state_count
 FROM customers
@@ -183,7 +183,7 @@ GROUP BY customer_city
 HAVING state_count > 1
 ORDER BY state_count DESC;
 
-#Top 3 cities per state
+#10 Top 3 cities per state
 SELECT customer_state, customer_city, total_customers
 FROM (
     SELECT customer_state, customer_city,
